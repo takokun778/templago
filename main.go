@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -15,10 +17,17 @@ func main() {
 
 	const timeout = 3
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	server := &http.Server{
-		Addr:              ":8080",
+		Addr:              fmt.Sprintf(":%s", port),
 		ReadHeaderTimeout: timeout * time.Second,
 	}
+
+	log.Printf("server listen on %s", port)
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)

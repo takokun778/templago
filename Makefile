@@ -43,7 +43,11 @@ run: ## go run
 
 .PHONY: dev
 dev: ## air hot reload
-	@air
+	@docker compose --project-name ${APP_NAME} --file .docker/docker-compose.yaml up -d
+
+.PHONY: log
+log: ## docker log
+	@docker logs ${APP_NAME}-dev
 
 .PHONY: image
 image: ## ko build image
