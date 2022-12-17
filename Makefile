@@ -25,29 +25,49 @@ fmt: ## go format
 lint: ## go lint
 	@golangci-lint run --fix
 
-.PHONY: modules
-modules: ## go modules list
+.PHONY: tidy
+tidy: ## go mod tidy
+	@go mod tidy
+
+.PHONY: mod
+mod: ## go modules list
 	@go list -u -m all
 
-.PHONY: updata
+.PHONY: update
 update: ## go modules update
 	@go get -u -t ./...
 
 .PHONY: test
 test: ## go test
-	@go test ./...
+	@$(call _test,${c})
+
+define _test
+if [ -z "$1" ]; then \
+	go test ./... ; \
+else \
+	go test ./... -count=1; \
+fi
+endef
 
 .PHONY: run
 run: ## go run
 	@go run main.go
 
-.PHONY: dev
-dev: ## air hot reload
-	@docker compose --project-name ${APP_NAME} --file .docker/docker-compose.yaml up -d
+.PHONY: up
+up: ## docker compose up with air hot reload
+	@docker compose --project-name ${APP_NAME} --file docker-compose.yaml up -d
+
+.PHONY: down
+down: ## docker compose down
+	@docker compose down
 
 .PHONY: log
 log: ## docker log
-	@docker logs ${APP_NAME}-dev
+	@docker logs ${APP_NAME}-app
+
+.PHONY: psql
+psql:
+	@docker exec -it ${APP_NAME}-db psql -U postgres
 
 .PHONY: image
 image: ## ko build image
