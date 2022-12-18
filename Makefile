@@ -45,7 +45,7 @@ define _test
 if [ -z "$1" ]; then \
 	go test ./... ; \
 else \
-	go test ./... -count=1; \
+	go test ./... -count=1 ; \
 fi
 endef
 
