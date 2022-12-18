@@ -55,11 +55,11 @@ run: ## go run
 
 .PHONY: up
 up: ## docker compose up with air hot reload
-	@docker compose --project-name ${APP_NAME} --file docker-compose.yaml up -d
+	@docker compose --project-name ${APP_NAME} --file ./.docker/docker-compose.yaml up -d
 
 .PHONY: down
 down: ## docker compose down
-	@docker compose down
+	@docker compose --project-name ${APP_NAME} down
 
 .PHONY: log
 log: ## docker log

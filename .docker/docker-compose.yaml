@@ -12,7 +12,7 @@ services:
       PORT: ${APP_PORT}
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres?sslmode=disable
     volumes:
-      - ./:/app
+      - ../:/app
     restart: always
     depends_on:
       - db
